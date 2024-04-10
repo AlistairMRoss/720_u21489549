@@ -1,8 +1,13 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
-  "exclude": ["packages"],
-  "compilerOptions": {
-    "module": "esnext",
-    "moduleResolution": "node"
-  }
+   "compilerOptions": {
+      "noEmit": true,
+      "module": "NodeNext",
+      "moduleResolution": "NodeNext",
+  },
+  "include": [
+    "stacks",
+    "packages/functions",
+    "packages/core"
+  ]
 }

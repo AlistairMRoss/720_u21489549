@@ -9,7 +9,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.4.19"
+    "@aws-amplify/ui-vue": "^4.2.3",
+    "@vueuse/core": "^10.9.0",
+    "aws-amplify": "^6.0.27",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
+    "vue": "^3.4.19",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
