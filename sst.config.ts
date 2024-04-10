@@ -8,7 +8,7 @@ export default {
     return {
       name: "u21489549-720",
       region: "us-east-1",
-      profile: input.stage === "prod" ? "cos720-prod" : "cos720-dev"
+      profile: "cos720"
     };
   },
   stacks(app) {
