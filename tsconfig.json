@@ -2,8 +2,11 @@
   "extends": "@tsconfig/node18/tsconfig.json",
    "compilerOptions": {
       "noEmit": true,
-      "module": "NodeNext",
-      "moduleResolution": "NodeNext",
+      "target": "esnext",
+      "module": "ESNext",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "resolveJsonModule": true
   },
   "include": [
     "stacks",

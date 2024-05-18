@@ -5,26 +5,12 @@ import { Amplify } from 'aws-amplify'
 import App from './App.vue'
 import router from './router'
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import awsmobile from './aws-exports'
 
-// import './assets/base.scss'
-// import './assets/base.css'
+import './assets/base.scss'
+import './assets/base.css'
 
-Amplify.configure({
-  Auth: {
-    region: ''
-    userPoolId: ''
-    userPoolWebClientId: ''
-  },
-  API: {
-    endpoints: [
-      {
-        name: 'api',
-        endpoint: 'https://igsogpvil4.execute-api.us-east-1.amazonaws.com', //import.meta.env.VITE_APP_API_URL,
-        region: 'us-east-1' //import.meta.env.VITE_APP_REGION
-      }
-    ]
-  }
-})
+Amplify.configure(awsmobile)
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
