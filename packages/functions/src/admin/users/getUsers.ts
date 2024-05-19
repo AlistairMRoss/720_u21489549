@@ -5,7 +5,9 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<API
   // returning
   try {
     // Checks if the user is an admin
-    await adminCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
+    console.log('Got here')
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    await adminCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'])
     const result = await getUsers()
     return {
       statusCode: 200,

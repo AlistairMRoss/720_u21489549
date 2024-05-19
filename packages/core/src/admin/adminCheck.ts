@@ -2,6 +2,8 @@ import { CoreError } from '../CoreError.d.js'
 
 export async function adminCheck (userGroup: string | string[] | undefined): Promise<boolean> {
   try {
+    console.log('In the try')
+    console.log(userGroup)
     if ((userGroup?.includes('admin')) ?? false) {
       console.log('Authorized admin')
     } else {
