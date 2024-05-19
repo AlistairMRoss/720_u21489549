@@ -41,13 +41,13 @@ export function ApiStack({ stack, app }: StackContext) {
   });
 
   auth.attachPermissionsForAuthUsers(stack, [api]);
-  api.attachPermissionsToRoute('PUT /v1/admin/user/createUser', ['cognito-idp:AdminCreateUser']);
-  api.attachPermissionsToRoute('DELETE /v1/admin/user/{userId}/deleteUser', ['cognito-idp:AdminDeleteUser']);
-  api.attachPermissionsToRoute('GET /v1/admin/user/getUsers', ['cognito-idp:ListUsers']);
-  api.attachPermissionsToRoute('GET /v1/admin/user/getGroups', ['cognito-idp:ListGroups']);
-  api.attachPermissionsToRoute('PUT /v1/admin/user/createGroup', ['cognito-idp:CreateGroup']);
-  api.attachPermissionsToRoute('PATCH /v1/admin/user/{userId}/addUserToGroup', ['cognito-idp:AdminAddUserToGroup']);
-  api.attachPermissionsToRoute('GET /v1/user/getRole', ['cognito-idp:AdminGetUser']);
+  api.attachPermissionsToRoute('PUT /v1/admin/user/createUser', ['cognito-idp:*']);
+  api.attachPermissionsToRoute('DELETE /v1/admin/user/{userId}/deleteUser', ['cognito-idp:*']);
+  api.attachPermissionsToRoute('GET /v1/admin/user/getUsers', ['cognito-idp:*']);
+  api.attachPermissionsToRoute('GET /v1/admin/user/getGroups', ['cognito-idp:*']);
+  api.attachPermissionsToRoute('PUT /v1/admin/user/createGroup', ['cognito-idp:*']);
+  api.attachPermissionsToRoute('PATCH /v1/admin/user/{userId}/addUserToGroup', ['cognito-idp:*']);
+  api.attachPermissionsToRoute('GET /v1/user/getRole', ['cognito-idp:*']);
   api.attachPermissions([subjectsTable])
 
   stack.addOutputs({
