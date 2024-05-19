@@ -30,7 +30,7 @@ export default {
 </script>
 
 <template>
-  <div class="col-12 py-4 my-1 menuItem pointer border-bottom" :class="{isActive: isActive}">
+  <div class="col-12 py-4 my-0 menuItem pointer border-bottom" :class="{isActive: isActive}">
     <div class="row mx-0 align-items-center" @click="goTo">
       <div class="col-2 fs-5 lh-1">
         <i :class="icon" v-if="icon"></i>

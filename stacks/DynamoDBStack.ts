@@ -1,9 +1,17 @@
 
 import { StackContext, Table} from 'sst/constructs'
 
-export function DynamoDBStack ({ stack }: StackContext): { subjectsTable:Table }
+export function DynamoDBStack ({ stack }: StackContext): { courseTable: Table, studentCourses: Table }
 {
-  const subjectsTable = new Table(stack, "subjectsData", {
+  const courseTable = new Table(stack, "courseData", {
+    fields: {
+      courseId: "string"
+    },
+    primaryIndex: { 
+      partitionKey: "courseId"},
+  })
+
+  const studentCourses = new Table(stack , "courseData", {
     fields: {
       studentId: "string"
     },
@@ -11,5 +19,5 @@ export function DynamoDBStack ({ stack }: StackContext): { subjectsTable:Table }
       partitionKey: "studentId"},
   })
 
-  return { subjectsTable }
-}
+  return { courseTable, studentCourses }
+} 

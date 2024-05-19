@@ -11,9 +11,10 @@
         data () {
           return {
             menuItems: [
-              { pageTitle: 'Courses', routePath: '/', icon: 'bi bi-collection' },
-              { pageTitle: 'My Courses', routePath: '/myCources', icon: 'bi bi-cpu' },
-              { pageTitle: 'Profile', routePath: '/profile', icon: 'bi bi-cpu' },
+              { pageTitle: 'Courses', routePath: '/', icon: 'bi bi-bank' },
+              { pageTitle: 'My Courses', routePath: '/courses', icon: 'bi bi-collection' },
+              { pageTitle: 'Profile', routePath: '/profile', icon: 'bi bi-person' },
+              { pageTitle: 'Users', routePath: '/users', icon: 'bi bi-people' },
             ]
           }
         },

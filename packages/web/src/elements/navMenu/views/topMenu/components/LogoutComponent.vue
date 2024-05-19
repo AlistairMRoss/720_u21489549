@@ -16,10 +16,7 @@
     },
     methods: {
       async logout () {
-        this.isLoading = true
-        // await this.authStore.logout()
-        this.$router.push('/auth')
-        this.isLoading = false
+        this.authStore.logout()
       }
     }
   }

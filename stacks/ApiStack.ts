@@ -3,7 +3,7 @@ import { DynamoDBStack } from './DynamoDBStack.js'
 import { CognitoStack } from './CognitoStack.js'
 const API_VERSION = 'v1'
 export function ApiStack({ stack, app }: StackContext) {
-  const { subjectsTable } = use(DynamoDBStack)
+  const { courseTable, studentCourses } = use(DynamoDBStack)
   const { auth } = use(CognitoStack)
   const api = new Api(stack, "Api", {
     authorizers: {
@@ -18,12 +18,13 @@ export function ApiStack({ stack, app }: StackContext) {
     defaults: {
       authorizer: 'jwt',
       function: {
-        bind: [subjectsTable],
+        bind: [courseTable, studentCourses],
         timeout: 60,
         environment: {
           UserPoolClientId: auth.userPoolClientId,
           UserPoolId: auth.userPoolId,
-          subjectsTableName: subjectsTable.tableName,
+          courseTableTableName: courseTable.tableName,
+          studentCoursesTableName: studentCourses.tableName
         },
       },
     },
@@ -47,7 +48,7 @@ export function ApiStack({ stack, app }: StackContext) {
   api.attachPermissionsToRoute('PATCH /v1/admin/user/{userId}/addUserToGroup', ['cognito-idp:AdminAddUserToGroup'])
   api.attachPermissionsToRoute('PUT /v1/admin/user/createGroup', ['cognito-idp:CreateGroup'])
   api.attachPermissionsToRoute('GET /v1/user/getRole', ['cognito-idp:*'])
-  api.attachPermissions([subjectsTable])
+  api.attachPermissions([courseTable, studentCourses])
 
   stack.addOutputs({
     ApiEndpoint: api.url
