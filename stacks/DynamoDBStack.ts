@@ -11,7 +11,7 @@ export function DynamoDBStack ({ stack }: StackContext): { courseTable: Table, s
       partitionKey: "courseId"},
   })
 
-  const studentCourses = new Table(stack , "courseData", {
+  const studentCourses = new Table(stack , "studentCourseData", {
     fields: {
       studentId: "string"
     },
