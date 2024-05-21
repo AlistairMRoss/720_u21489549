@@ -1,21 +1,19 @@
 import { DynamoDB, type AWSError } from 'aws-sdk'
 import { type PromiseResult } from 'aws-sdk/lib/request.js'
 
-export async function updateCourse (courseId: string, lecture: string, description: string): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
+export async function applyForCourse (studentId: string, newCourseIds: string[]): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
   try {
     const dynamoDb = new DynamoDB.DocumentClient()
-
     const updateParams = {
-      TableName: process.env.courseTableName ?? '',
+      TableName: process.env.courseTableTableName ?? '',
       Key: {
-        courseId
+        studentId
       },
-      UpdateExpression: 'set lecture = :lecture, description = :description',
+      UpdateExpression: 'ADD courseId :newCourse',
       ExpressionAttributeValues: {
-        ':lecture': lecture,
-        ':description': description
-      }
-      // ReturnValues: 'UPDATED_NEW'
+        ':newCourse': dynamoDb.createSet(newCourseIds)
+      },
+      ReturnValues: 'UPDATED_NEW'
     }
 
     const result = await dynamoDb.update(updateParams).promise()

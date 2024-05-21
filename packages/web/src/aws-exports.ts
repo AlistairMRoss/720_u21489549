@@ -10,7 +10,11 @@ const awsmobile = {
     ],
     "aws_cognito_social_providers": [],
     "aws_cognito_signup_attributes": [
-        "EMAIL"
+        "EMAIL",
+        "given_name",
+        "family_name",
+        "birthdate",
+        "phone_number"
     ],
     "aws_cognito_mfa_configuration": "OFF",
     "aws_cognito_mfa_types": [
@@ -25,7 +29,13 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
-    ]
+    ],
+    "requiredAttributes": [
+        "phone_number",
+        "given_name",
+        "family_name",
+        "birthdate"
+    ],
 };
 
 

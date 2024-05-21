@@ -29,7 +29,7 @@ export default {
       <HeaderComponent :size="size"/>
       <br>
       <div class="row justify-content-center">
-        <Authenticator :login-mechanisms="['email']" :hide-sign-up="true" ></Authenticator>
+        <Authenticator :login-mechanisms="['email']" :hide-sign-up="false"></Authenticator>
       </div>
     </div>
   </div>

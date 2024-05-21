@@ -2,9 +2,7 @@ import { type APIGatewayProxyHandlerV2, type APIGatewayProxyResultV2 } from 'aws
 import { getUsers } from '../../../../core/src/admin/users/getUsers.js'
 import { adminCheck } from '../../../../core/src/admin/adminCheck.js'
 export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<APIGatewayProxyResultV2> => {
-  // returning
   try {
-    // Checks if the user is an admin
     console.log('Got here')
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     await adminCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'])

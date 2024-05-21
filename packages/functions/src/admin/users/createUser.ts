@@ -2,9 +2,7 @@ import { type APIGatewayProxyHandlerV2, type APIGatewayProxyResultV2 } from 'aws
 import { createUser } from '../../../../core/src/admin/users/createUser.js'
 import { adminCheck } from '../../../../core/src/admin/adminCheck.js'
 export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<APIGatewayProxyResultV2> => {
-  // returning
   try {
-    // Checks if the user is an admin
     const data = JSON.parse(event.body as string)
     await adminCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
     await createUser(data.email as string)

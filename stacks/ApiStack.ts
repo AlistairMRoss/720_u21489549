@@ -34,9 +34,17 @@ export function ApiStack({ stack, app }: StackContext) {
       'DELETE /v1/admin/user/{userId}/deleteUser': 'packages/functions/src/admin/users/deleteUser.handler',
       'GET /v1/admin/user/getUsers': 'packages/functions/src/admin/users/getUsers.handler',
       'GET /v1/admin/user/getGroups': 'packages/functions/src/admin/users/getGroups.handler',
-      'PUT /v1/admin/user/createGroup': 'packages/functions/src/admin/users/createGroup.handler',
       'PATCH /v1/admin/user/{userId}/addUserToGroup': 'packages/functions/src/admin/users/addUserToGroup.handler',
       'GET /v1/user/getRole': 'packages/functions/src/admin/adminCheck.handler',
+      'GET /v1/student/getProfile': 'packages/functions/src/student/getMyProfile.handler',
+
+      // courses
+      'GET /v1/courses': 'packages/functions/src/course/getCourse.handler',
+      'POST /v1/courses/apply': 'packages/functions/src/student/applyForCourse.handler',
+      'GET /v1/student/myCourses': 'packages/functions/src/student/getMyCourse.handler',
+      'POST /v1/admin/addCourse' : 'packages/functions/src/admin/course/addCourse.handler',
+      'DELETE /v1/admin/deletCourse': 'packages/functions/src/admin/course/deleteCourse.handler',
+      'UPDATE /v1/admin/updateCourse': 'packages/functions/src/admin/course/updateCourse.handler'
     },
   });
 
@@ -49,7 +57,6 @@ export function ApiStack({ stack, app }: StackContext) {
   api.attachPermissionsToRoute('PUT /v1/admin/user/createGroup', ['cognito-idp:CreateGroup'])
   api.attachPermissionsToRoute('GET /v1/user/getRole', ['cognito-idp:*'])
   api.attachPermissions([courseTable, studentCourses])
-
   stack.addOutputs({
     ApiEndpoint: api.url
   });

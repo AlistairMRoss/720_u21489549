@@ -2,9 +2,7 @@ import { type APIGatewayProxyHandlerV2, type APIGatewayProxyResultV2 } from 'aws
 import { deleteUser } from '../../../../core/src/admin/users/deleteUser.js'
 import { adminCheck } from '../../../../core/src/admin/adminCheck.js'
 export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<APIGatewayProxyResultV2> => {
-  // returning
   try {
-    // Checks if the user is an admin
     await adminCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
     await deleteUser(event.requestContext.authorizer.jwt.claims.sub as string, event.pathParameters.userId as string)
     return {

@@ -2,9 +2,7 @@ import { type APIGatewayProxyHandlerV2, type APIGatewayProxyResultV2 } from 'aws
 import { addUserToGroup } from '../../../../core/src/admin/users/addUserToGroup.js'
 import { adminCheck } from '../../../../core/src/admin/adminCheck.js'
 export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<APIGatewayProxyResultV2> => {
-  // returning
   try {
-    // Checks if the user is an admin
     const data = JSON.parse(event.body as string)
     await adminCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
     await addUserToGroup(event.pathParameters.userId as string, data.group as string)
