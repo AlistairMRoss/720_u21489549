@@ -54,7 +54,7 @@ export function ApiStack({ stack, app }: StackContext) {
   api.attachPermissionsToRoute('GET /v1/admin/user/getUsers', ['cognito-idp:ListUsers'])
   api.attachPermissionsToRoute('GET /v1/admin/user/getGroups', ['cognito-idp:ListGroups'])
   api.attachPermissionsToRoute('PATCH /v1/admin/user/{userId}/addUserToGroup', ['cognito-idp:AdminAddUserToGroup'])
-  api.attachPermissionsToRoute('PUT /v1/admin/user/createGroup', ['cognito-idp:CreateGroup'])
+  api.attachPermissionsToRoute('GET /v1/student/getProfile', ['cognito-idp:GetUser'])
   api.attachPermissionsToRoute('GET /v1/user/getRole', ['cognito-idp:*'])
   api.attachPermissions([courseTable, studentCourses])
   stack.addOutputs({
