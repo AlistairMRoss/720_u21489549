@@ -39,7 +39,7 @@ export function ApiStack({ stack, app }: StackContext) {
       'GET /v1/student/getProfile': 'packages/functions/src/student/getMyProfile.handler',
 
       // courses
-      'GET /v1/courses': 'packages/functions/src/course/getCourse.handler',
+      'GET /v1/courses': 'packages/functions/src/course/getCourses.handler',
       'POST /v1/courses/apply': 'packages/functions/src/student/applyForCourse.handler',
       'GET /v1/student/myCourses': 'packages/functions/src/student/getMyCourse.handler',
       'POST /v1/admin/addCourse' : 'packages/functions/src/admin/course/addCourse.handler',
