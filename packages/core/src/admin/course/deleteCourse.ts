@@ -6,7 +6,7 @@ export async function deleteCourse (courseId: string): Promise<PromiseResult<Dyn
     const dynamoDb = new DynamoDB.DocumentClient()
 
     const deleteParams = {
-      TableName: process.env.courseTableName ?? '',
+      TableName: process.env.courseTableTableName ?? '',
       Key: {
         courseId
       }

@@ -6,7 +6,7 @@ export async function getCourses (): Promise<PromiseResult<DynamoDB.DocumentClie
     const dynamoDb = new DynamoDB.DocumentClient()
 
     const getParams = {
-      TableName: process.env.courseTableName ?? ''
+      TableName: process.env.courseTableTableName ?? ''
     }
 
     const result = await dynamoDb.scan(getParams).promise()

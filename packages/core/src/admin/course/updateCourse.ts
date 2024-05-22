@@ -6,7 +6,7 @@ export async function updateCourse (courseId: string, lecture: string, descripti
     const dynamoDb = new DynamoDB.DocumentClient()
 
     const updateParams = {
-      TableName: process.env.courseTableName ?? '',
+      TableName: process.env.courseTableTableName ?? '',
       Key: {
         courseId
       },
