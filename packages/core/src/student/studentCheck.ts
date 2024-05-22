@@ -2,7 +2,7 @@ import { CoreError } from '../CoreError.d.js'
 
 export async function studentCheck (userGroup: string | string[] | undefined): Promise<boolean> {
   try {
-    if ((userGroup?.includes('student')) ?? false) {
+    if ((userGroup?.includes('student') ?? userGroup?.includes('admin')) ?? false) {
       console.log('Authorized student')
     } else {
       console.log('user not registered as student')
