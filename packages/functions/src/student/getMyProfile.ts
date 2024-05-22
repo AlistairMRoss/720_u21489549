@@ -7,7 +7,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<API
     await studentCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
     console.log(event.requestContext.authorizer.jwt.claims['cognito:sub'])
     console.log(event.requestContext.authorizer.jwt.claims['cognito:sub'] as string)
-    const result = await getMyProfile(event.requestContext.authorizer.jwt.claims['cognito:sub'] as string)
+    const result = await getMyProfile(event.requestContext.authorizer.jwt.claims.sub as string)
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
