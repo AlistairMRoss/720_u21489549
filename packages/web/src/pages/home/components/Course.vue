@@ -2,25 +2,20 @@
     <div class="box-container">
         <div class="box">
             <div class="box-header text-white">
-                {{ courseName }}
+                {{ course.courseId }}
             </div>
             <div class="box-subsection">
-                Sub-section content goes here.
+                {{ course.description }}
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-export default {
-    name: "Course",
-    props: {
-        courseName: {
-            type: String,
-            required: true
-        }
+    export default {
+        name: "Course",
+        props: ["course"]
     }
-}
 </script>
 
 <style scoped>

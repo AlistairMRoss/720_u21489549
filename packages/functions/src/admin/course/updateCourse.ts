@@ -9,7 +9,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<API
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success: 'User added to group' })
+      body: JSON.stringify({ success: 'Course Updated' })
     }
   } catch (err: any) {
     return {

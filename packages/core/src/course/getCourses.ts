@@ -10,6 +10,7 @@ export async function getCourses (): Promise<PromiseResult<DynamoDB.DocumentClie
     }
 
     const result = await dynamoDb.scan(getParams).promise()
+    console.log(result)
     return result
   } catch (err: any) {
     console.error(err)
