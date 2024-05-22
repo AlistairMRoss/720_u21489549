@@ -16,6 +16,11 @@ export const useAuthStore = defineStore('auth', {
         if(session.tokens?.accessToken && this.checkTokenValid(session.tokens.accessToken.payload.exp as number)) {
           this.logout();
         } else {
+          if(session.tokens?.accessToken.toString() !== this.authDetails?.token){
+            if(this.authDetails !== null) {
+              this.authDetails.token = session.tokens?.accessToken.toString() as string
+            }
+          }
           return;
         }
       }
