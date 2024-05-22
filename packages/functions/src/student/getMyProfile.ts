@@ -5,7 +5,8 @@ import { studentCheck } from '../../../core/src/student/studentCheck.js'
 export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<APIGatewayProxyResultV2> => {
   try {
     await studentCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
-    const result = await getMyProfile(event.authorization as string)
+    const accessToken = event.headers.authorization.split('Bearer ')[1]
+    const result = await getMyProfile(accessToken as string)
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
