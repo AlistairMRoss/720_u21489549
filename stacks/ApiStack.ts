@@ -43,7 +43,7 @@ export function ApiStack({ stack, app }: StackContext) {
       'POST /v1/courses/apply': 'packages/functions/src/student/applyForCourse.handler',
       'GET /v1/student/myCourses': 'packages/functions/src/student/getMyCourse.handler',
       'POST /v1/admin/addCourse' : 'packages/functions/src/admin/course/addCourse.handler',
-      'DELETE /v1/admin/deletCourse': 'packages/functions/src/admin/course/deleteCourse.handler',
+      'DELETE /v1/admin/{courseId}/delete': 'packages/functions/src/admin/course/deleteCourse.handler',
       'PUT /v1/admin/updateCourse': 'packages/functions/src/admin/course/updateCourse.handler'
     },
   });

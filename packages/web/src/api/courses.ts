@@ -6,7 +6,7 @@ const getAllCourses = async (): Promise<any> => {
     await authStore.checkLoginStatus()
     const userDetails = authStore.authDetails
     const token = userDetails?.token as string
-    const response = await fetch(`${API_ROOT}/course/getAllCourses`, {
+    const response = await fetch(`${API_ROOT}/courses`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ const addCourse = async (courseId: string, lecture: string, description: string)
     await authStore.checkLoginStatus()
     const userDetails = authStore.authDetails
     const token = userDetails?.token as string
-    const response = await fetch(`${API_ROOT}/course/addCourse`, {
+    const response = await fetch(`${API_ROOT}/admin/addCourse`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ const deleteCourse = async (courseId: string): Promise<any> => {
     await authStore.checkLoginStatus()
     const userDetails = authStore.authDetails
     const token = userDetails?.token as string
-    const response = await fetch(`${API_ROOT}/course/${courseId}/delete`, {
+    const response = await fetch(`${API_ROOT}/admin/${courseId}/delete`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -83,6 +83,24 @@ const deleteCourse = async (courseId: string): Promise<any> => {
     }
 }
 
-const getMyCourses = async (studentId: string): Promise<any> => {
-    
+const getMyCourses = async (): Promise<any> => {
+    const authStore = useAuthStore()
+    await authStore.checkLoginStatus()
+    const userDetails = authStore.authDetails
+    const token = userDetails?.token as string
+    const response = await fetch(`${API_ROOT}/student/myCourses`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+    })
+    const respObj = await response.json()
+    if(response.status === 200) {
+        return respObj
+    } else {
+        throw new Error(respObj.message)
+    }
 }
+
+export { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses }
