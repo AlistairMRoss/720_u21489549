@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import type { course } from '../../../sharedTypes/course'
-import { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses } from '../api/courses'
-
+import { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses, applyForCourse } from '../api/courses'
 
 export const useCourseStore = defineStore('courseStore', {
     state: () => ({
@@ -27,6 +26,9 @@ export const useCourseStore = defineStore('courseStore', {
         },
         async getMyCourses() {
           const result = await getMyCourses()
+        },
+        async applyForCourse(courseId: string) {
+          const result = await applyForCourse(courseId)
         }
     }
 })

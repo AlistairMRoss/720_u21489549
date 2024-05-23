@@ -11,10 +11,11 @@
         <div v-else class="container mt-5">
             <div class="row">
                 <div v-for="course in courses" :key="course.courseId" class="col-md-6 mb-4">
-                    <Course :course="course" />
+                    <Course :course="course" @click="openPopup(course)"/>                 
                 </div>
             </div>
         </div>
+        <PopupCourse v-if="showCourse" :course="popCourse" :closePopup="closePopup"/>
     </PageDisplay>
 </template>
 
@@ -23,6 +24,7 @@
     import PageDisplay from '../../elements/pageDisplay/PageDisplay.vue'
     import PageOptionsBar from '../../elements/pageDisplay/PageOptionsBar.vue'
     import Course from './components/Course.vue'
+    import PopupCourse from './components/PopupCourse.vue'
     import { useCourseStore } from '../../stores/courseStore'
     import { type course } from '../../../../sharedTypes/course'
     
@@ -31,13 +33,14 @@
         components: {
             PageDisplay,
             PageOptionsBar,
-            Course
+            Course,
+            PopupCourse
         },
         setup() {
             const courseStore = useCourseStore()
             const loading = ref(true)
             const courses = ref<course[]>([])
-
+            let popCourse = ref<course>()
             onMounted(async () => {
                 if (courseStore.courseList === null) {
                     await courseStore.getAllCourses()
@@ -46,7 +49,21 @@
                 loading.value = false
             })
 
-            return { loading, courses }
+            return { loading, courses, popCourse }
+        },
+        data () {
+            return {
+                showCourse: false
+            }
+        },
+        methods: {
+            openPopup(course: course) {
+                this.popCourse = course
+                this.showCourse = true
+            },
+            closePopup() {
+                this.showCourse = false
+            }
         }
     })
 </script>

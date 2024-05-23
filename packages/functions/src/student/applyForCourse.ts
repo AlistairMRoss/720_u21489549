@@ -5,7 +5,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<API
   try {
     const data = JSON.parse(event.body as string)
     await studentCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
-    await applyForCourse(data.studentId as string, data.newCourseIds as string[])
+    await applyForCourse(event.requestContext.authorizer.jwt.claims.sub as string, data.courseId as string)
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },

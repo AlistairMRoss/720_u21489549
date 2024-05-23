@@ -1,7 +1,7 @@
 import { DynamoDB, type AWSError } from 'aws-sdk'
 import { type PromiseResult } from 'aws-sdk/lib/request.js'
 
-export async function applyForCourse (studentId: string, newCourseIds: string[]): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
+export async function applyForCourse (studentId: string, newCourseId: string): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
   try {
     const dynamoDb = new DynamoDB.DocumentClient()
     const updateParams = {
@@ -9,17 +9,17 @@ export async function applyForCourse (studentId: string, newCourseIds: string[])
       Key: {
         studentId
       },
-      UpdateExpression: 'ADD courseId :newCourse',
+      UpdateExpression: 'ADD courseIds :newCourseId',
       ExpressionAttributeValues: {
-        ':newCourse': dynamoDb.createSet(newCourseIds)
+        ':newCourseId': dynamoDb.createSet([newCourseId])
       },
       ReturnValues: 'UPDATED_NEW'
     }
 
     const result = await dynamoDb.update(updateParams).promise()
     return result
-  } catch (err: any) {
+  } catch (err) {
     console.error(err)
-    throw new Error('internal server error')
+    throw new Error('Internal server error')
   }
 }
