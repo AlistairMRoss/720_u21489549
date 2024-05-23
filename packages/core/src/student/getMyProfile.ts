@@ -14,7 +14,7 @@ export async function getMyProfile (userId: string): Promise<Profile> {
 
     const userProfile: Profile = {
       email: response.UserAttributes.find((attr) => attr.Name === 'email')?.Value ?? '',
-      name: response.UserAttributes.find((attr) => attr.Name === 'name')?.Value ?? '',
+      name: response.UserAttributes.find((attr) => attr.Name === 'given_name')?.Value ?? '',
       surname: response.UserAttributes.find((attr) => attr.Name === 'family_name')?.Value ?? '',
       phone_number: response.UserAttributes.find((attr) => attr.Name === 'phone_number')?.Value ?? '',
       birthdate: response.UserAttributes.find((attr) => attr.Name === 'birthdate')?.Value as unknown as Date ?? null

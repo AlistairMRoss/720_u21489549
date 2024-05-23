@@ -36,8 +36,9 @@ export const useUserStore = defineStore('user', {
       return result
     },
     async getMyProfile() {
+      console.log("Is this happening")
         const result = await getMyProfile()
-        this.profile = result
+        this.profile = result.result
         return result
     }
   },

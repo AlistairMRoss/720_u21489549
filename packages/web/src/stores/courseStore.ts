@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import type { Course } from '../../../sharedTypes/course'
+import type { course } from '../../../sharedTypes/course'
 import { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses } from '../api/courses'
 
 
 export const useCourseStore = defineStore('courseStore', {
     state: () => ({
-      courseList: null as Course[] | null,
-      myCourses: null as Course[] | null
+      courseList: null as course[] | null,
+      myCourses: null as course[] | null
     }),
     actions: {
         async getAllCourses() {
