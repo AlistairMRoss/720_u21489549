@@ -71,6 +71,7 @@
             async apply() {
                 this.applying = true
                 await this.courseStore.applyForCourse(this.course.courseId)
+                this.goBack()
             }
         }
     }
