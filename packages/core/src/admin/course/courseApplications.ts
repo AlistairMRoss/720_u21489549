@@ -5,12 +5,12 @@ export async function courseApplications (courseId: string, studentId: string, a
   try {
     const dynamoDb = new DynamoDB.DocumentClient()
 
-    let updateExpression = 'REMOVE #applications[?courseId == :courseId]'
+    let updateExpression = 'REMOVE #applications[:courseId]'
     let expressionAttributeValues: Record<string, any> = { ':courseId': courseId, ':empty_list': [] }
     const expressionAttributeNames: Record<string, string> = { '#applications': 'applications' }
 
     if (accepted) {
-      updateExpression = 'SET accepted = list_append(if_not_exists(accepted, :empty_list), :courseId) REMOVE #applications[?courseId == :courseId]'
+      updateExpression = 'SET accepted = list_append(if_not_exists(accepted, :empty_list), :courseId) REMOVE #applications[:courseId]'
       expressionAttributeValues = {
         ':courseId': courseId,
         ':empty_list': []
