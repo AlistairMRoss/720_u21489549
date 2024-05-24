@@ -11,8 +11,8 @@ export async function getMyCourse (studentId: string): Promise<PromiseResult<Dyn
         studentId
       }
     }
-
     const result = await dynamoDb.get(getParams).promise()
+    console.log(result)
     return result
   } catch (err: any) {
     console.error(err)

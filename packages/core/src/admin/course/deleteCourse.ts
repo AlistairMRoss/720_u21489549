@@ -13,6 +13,7 @@ export async function deleteCourse (courseId: string): Promise<PromiseResult<Dyn
     }
 
     const result = await dynamoDb.delete(deleteParams).promise()
+    console.log(result)
     return result
   } catch (err: any) {
     console.error(err)

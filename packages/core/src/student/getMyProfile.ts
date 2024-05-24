@@ -19,7 +19,7 @@ export async function getMyProfile (userId: string): Promise<Profile> {
       phone_number: response.UserAttributes.find((attr) => attr.Name === 'phone_number')?.Value ?? '',
       birthdate: response.UserAttributes.find((attr) => attr.Name === 'birthdate')?.Value as unknown as Date ?? null
     }
-
+    console.log(userProfile)
     return userProfile
   } catch (err: any) {
     console.log(err)

@@ -19,6 +19,7 @@ export async function updateCourse (courseId: string, lecture: string, descripti
     }
 
     const result = await dynamoDb.update(updateParams).promise()
+    console.log(result)
     return result
   } catch (err: any) {
     console.error(err)

@@ -6,7 +6,6 @@ const cognito = new CognitoIdentityServiceProvider({
 
 export async function addUserToGroup (userId: string, group: string): Promise<boolean> {
   try {
-    // adding a user to a group
     await cognito.adminAddUserToGroup({
       // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
       UserPoolId: process.env.UserPoolId as string,

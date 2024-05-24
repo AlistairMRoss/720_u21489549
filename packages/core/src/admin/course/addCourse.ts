@@ -18,6 +18,7 @@ export async function addCourse (courseId: string, lecture: string, description:
     }
 
     const result = await dynamoDb.put(putParams).promise()
+    console.log(result)
     return result
   } catch (err: any) {
     console.error(err)

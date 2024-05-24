@@ -3,9 +3,8 @@ import { deleteCourse } from '../../../../core/src/admin/course/deleteCourse.js'
 import { adminCheck } from '../../../../core/src/admin/adminCheck.js'
 export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<APIGatewayProxyResultV2> => {
   try {
-    const data = JSON.parse(event.body as string)
     await adminCheck(event.requestContext.authorizer.jwt.claims['cognito:groups'] as string[])
-    await deleteCourse(data.courseId as string)
+    await deleteCourse(event.pathParameters.courseId as string)
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },

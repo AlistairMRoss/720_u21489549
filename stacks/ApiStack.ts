@@ -30,7 +30,6 @@ export function ApiStack({ stack, app }: StackContext) {
     },
     routes: {
       // user
-      'PUT /v1/admin/user/createUser': 'packages/functions/src/admin/users/createUser.handler',
       'DELETE /v1/admin/user/{userId}/deleteUser': 'packages/functions/src/admin/users/deleteUser.handler',
       'GET /v1/admin/user/getUsers': 'packages/functions/src/admin/users/getUsers.handler',
       'GET /v1/admin/user/getGroups': 'packages/functions/src/admin/users/getGroups.handler',
@@ -49,7 +48,6 @@ export function ApiStack({ stack, app }: StackContext) {
   });
 
   auth.attachPermissionsForAuthUsers(stack, [api]);
-  api.attachPermissionsToRoute('PUT /v1/admin/user/createUser', ['cognito-idp:AdminCreateUser'])
   api.attachPermissionsToRoute('DELETE /v1/admin/user/{userId}/deleteUser', ['cognito-idp:AdminDeleteUser'])
   api.attachPermissionsToRoute('GET /v1/admin/user/getUsers', ['cognito-idp:ListUsers'])
   api.attachPermissionsToRoute('GET /v1/admin/user/getGroups', ['cognito-idp:ListGroups'])
