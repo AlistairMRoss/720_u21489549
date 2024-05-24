@@ -1,27 +1,42 @@
 import { DynamoDB, type AWSError } from 'aws-sdk'
 import { type PromiseResult } from 'aws-sdk/lib/request.js'
 
-export async function courseApplications (courseId: string, studentId: string, accepted: boolean): Promise<PromiseResult<DynamoDB.DocumentClient.GetItemOutput, AWSError>> {
+export async function courseApplications (courseId: string, studentId: string, accepted: boolean): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
   try {
     const dynamoDb = new DynamoDB.DocumentClient()
 
-    let updateExpression = 'REMOVE #applications[:courseId]'
-    let expressionAttributeValues: Record<string, any> = { ':courseId': courseId, ':empty_list': [] }
+    const getItemParams = {
+      TableName: process.env.studentCoursesTableName ?? '',
+      Key: { studentId }
+    }
+
+    const currentItem = await dynamoDb.get(getItemParams).promise()
+
+    if (currentItem.Item == null) {
+      throw new Error('Item not found')
+    }
+
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    const applications = currentItem.Item.applications || []
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    const acceptedList = currentItem.Item.accepted || []
+
+    const updatedApplications = applications.filter((id: string) => id !== courseId)
+
+    let updateExpression = 'SET #applications = :updatedApplications'
+    const expressionAttributeValues: Record<string, any> = { ':updatedApplications': updatedApplications }
     const expressionAttributeNames: Record<string, string> = { '#applications': 'applications' }
 
     if (accepted) {
-      updateExpression = 'SET accepted = list_append(if_not_exists(accepted, :empty_list), :courseId) REMOVE #applications[:courseId]'
-      expressionAttributeValues = {
-        ':courseId': courseId,
-        ':empty_list': []
-      }
+      const updatedAcceptedList = [...acceptedList, courseId]
+      updateExpression += ', #accepted = :updatedAcceptedList'
+      expressionAttributeValues[':updatedAcceptedList'] = updatedAcceptedList
+      expressionAttributeNames['#accepted'] = 'accepted'
     }
 
     const updateParams = {
       TableName: process.env.studentCoursesTableName ?? '',
-      Key: {
-        studentId
-      },
+      Key: { studentId },
       UpdateExpression: updateExpression,
       ExpressionAttributeValues: expressionAttributeValues,
       ExpressionAttributeNames: expressionAttributeNames,
