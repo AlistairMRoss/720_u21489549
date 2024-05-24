@@ -1,7 +1,7 @@
 import { DynamoDB, type AWSError } from 'aws-sdk'
 import { type PromiseResult } from 'aws-sdk/lib/request.js'
 
-export async function addCourse (courseId: string, studentId: string, accepted: boolean): Promise<PromiseResult<DynamoDB.DocumentClient.GetItemOutput, AWSError>> {
+export async function courseApplications (courseId: string, studentId: string, accepted: boolean): Promise<PromiseResult<DynamoDB.DocumentClient.GetItemOutput, AWSError>> {
   try {
     const dynamoDb = new DynamoDB.DocumentClient()
 
