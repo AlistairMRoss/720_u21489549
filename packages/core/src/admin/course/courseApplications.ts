@@ -8,7 +8,7 @@ export async function courseApplications (courseId: string, studentId: string, a
     let updateExpression = 'REMOVE applications :courseId'
     let expressionAttributeValues: Record<string, any> = { ':courseId': courseId }
     if (accepted) {
-      updateExpression = 'SET accepted = list_append(if_not_exists(accepted, :empty_list), :new_course), :courseId REMOVE applications :courseId'
+      updateExpression = 'SET accepted = list_append(if_not_exists(accepted, :empty_list), :new_course) REMOVE applications :courseId'
       expressionAttributeValues = {
         ':courseId': courseId,
         ':new_course': [courseId],
