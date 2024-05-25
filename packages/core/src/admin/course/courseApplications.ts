@@ -21,7 +21,8 @@ export async function courseApplications (courseId: string, studentId: string, a
     const applications = currentItem.Item.applications || []
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     const acceptedList = currentItem.Item.accepted || []
-
+    console.log(acceptedList.length)
+    console.log(accepted)
     if (acceptedList.length === 0 && accepted) {
       await addUserToGroup(studentId, 'student')
     }
