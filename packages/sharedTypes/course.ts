@@ -3,3 +3,9 @@ export interface course {
     lecture: string
     description: string
 }
+
+export interface studentCourses {
+    studentId: string
+    accepted: string[]
+    applications: string[]
+}

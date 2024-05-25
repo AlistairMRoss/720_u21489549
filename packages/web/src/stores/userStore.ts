@@ -19,12 +19,10 @@ export const useUserStore = defineStore('user', {
       const result = await deleteUser(userId)
       return result
     },
-    async getUsers(repeat: boolean) {
-      if(repeat) {
+    async getUsers() {
         const result = await getUsers()
         this.users = result
         return result
-      }
     },
     async getGroups() {
       const result = await getGroups()

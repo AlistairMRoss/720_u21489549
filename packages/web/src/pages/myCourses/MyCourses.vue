@@ -39,14 +39,11 @@
             const courses = ref<course[]>([])
 
             onMounted(async () => {
-                if (courseStore.courseList === null) {
+                if (courseStore.myCourses === undefined) {
                     await courseStore.getMyCourses()
                 }
                 courses.value  = courseStore.myCourses || []
-                if (courseStore.courseList?.length === 0) {
-                    console.log(courseStore.courseList)
-                    loading.value = false
-                }
+                loading.value = false
             })
 
             return { loading, courses }

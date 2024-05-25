@@ -36,7 +36,9 @@ export async function courseApplications (courseId: string, studentId: string, a
 
     const updateParams = {
       TableName: process.env.studentCoursesTableName ?? '',
-      Key: { studentId },
+      Key: {
+        studentId
+      },
       UpdateExpression: updateExpression,
       ExpressionAttributeValues: expressionAttributeValues,
       ExpressionAttributeNames: expressionAttributeNames,

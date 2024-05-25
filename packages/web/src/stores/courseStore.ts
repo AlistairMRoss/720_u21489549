@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
-import type { course } from '../../../sharedTypes/course'
-import { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses, applyForCourse } from '../api/courses'
+import type { course, studentCourses } from '../../../sharedTypes/course'
+import { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses, applyForCourse, getStudentApplications } from '../api/courses'
 
 export const useCourseStore = defineStore('courseStore', {
     state: () => ({
       courseList: null as course[] | null,
-      myCourses: null as course[] | null
+      myCourses: undefined as course[] | undefined,
+      acceptedAndReject: null as studentCourses | null,
+      studentApplications: null as string[] | null
     }),
     actions: {
         async getAllCourses() {
@@ -26,9 +28,21 @@ export const useCourseStore = defineStore('courseStore', {
         },
         async getMyCourses() {
           const result = await getMyCourses()
+          this.acceptedAndReject = result.result.Item;
+          if(this.courseList === null) {
+            await getAllCourses()
+          }
+          if (this.courseList) {
+            this.myCourses = this.courseList.filter((course) => this.acceptedAndReject?.accepted.includes(course.courseId))
+            console.log(this.myCourses)
+          }
         },
         async applyForCourse(courseId: string) {
           const result = await applyForCourse(courseId)
+        },
+        async getStudentApplications(studentId: string) {
+          const result = await getStudentApplications(studentId)
+          this.studentApplications = result.Item
         }
     }
 })

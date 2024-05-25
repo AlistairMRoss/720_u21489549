@@ -4,6 +4,7 @@ import Course from '../pages/home/Home.vue'
 import MyCourses from '../pages/myCourses/MyCourses.vue'
 import Profile from '../pages/Profile/Profile.vue'
 import Users from '../pages/users/Users.vue'
+import UserInfo from '../pages/users/UserInfo.vue'
 import { useAuthStore } from '../stores/authStore'
 
 
@@ -34,6 +35,11 @@ const router = createRouter({
       path: '/users',
       name: "Users",
       component: Users
+    },
+    {
+      path: '/userinfo/:username',
+      name: 'Info',
+      component: UserInfo
     }
   ]
 })
