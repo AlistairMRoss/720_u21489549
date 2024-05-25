@@ -41,7 +41,9 @@ export const useCourseStore = defineStore('courseStore', {
           const result = await applyForCourse(courseId)
         },
         async getStudentApplications(studentId: string) {
+          console.log(studentId)
           const result = await getStudentApplications(studentId)
+          console.log(result)
           this.studentApplications = result.Item
         }
     }

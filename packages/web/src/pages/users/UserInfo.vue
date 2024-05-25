@@ -67,9 +67,9 @@
             onMounted(async () => {
                 if(userStore.users === null) {
                     await userStore.getUsers()
-                }
-                // await 
+                } 
                 user.value = userStore.users?.find(user => user.Username === username.value) as User || null
+                await courseStore.getStudentApplications(user.value.Username)
                 console.log(user.value)
                 loading.value = false
             })
