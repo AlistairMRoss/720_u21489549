@@ -24,7 +24,6 @@
                 </div>
             </div>
             <div class="row mt-5">
-
                 <ButtonWithSpinner v-if="canApply" :disabled="isSaveDisabled" :isBusy="applying" @btnClicked="apply" btnClass="btn-primary" class="m-2">
                     <span v-if="applying">Applying...</span>
                     <span v-else-if="!applying">Apply</span>

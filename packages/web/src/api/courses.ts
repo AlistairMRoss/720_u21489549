@@ -138,10 +138,31 @@ const getStudentApplications = async (studentId: string): Promise<any> => {
     })
     const respObj = await response.json()
     if(response.status === 200) {
-        return respObj
+        return respObj.result
     } else {
         throw new Error(respObj.message)
     }
 }
 
-export { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses, applyForCourse, getStudentApplications }
+const acceptRejectApplication = async (courseId: string, studentId: string, acceptOrReject: boolean): Promise<any> => {
+    const authStore = useAuthStore()
+    await authStore.checkLoginStatus()
+    const userDetails = authStore.authDetails
+    const token = userDetails?.token as string
+    const response = await fetch(`${API_ROOT}/admin/courseApplications`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({courseId, studentId, acceptOrReject})
+    })
+    const respObj = await response.json()
+    if(response.status === 200) {
+        return respObj.result
+    } else {
+        throw new Error(respObj.message)
+    }
+}
+
+export { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses, applyForCourse, getStudentApplications, acceptRejectApplication }

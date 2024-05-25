@@ -4,7 +4,33 @@ import { type PromiseResult } from 'aws-sdk/lib/request.js'
 export async function applyForCourse (studentId: string, newCourseId: string): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
   try {
     const dynamoDb = new DynamoDB.DocumentClient()
-    const params = {
+
+    const getParams = {
+      TableName: process.env.studentCoursesTableName ?? '',
+      Key: {
+        studentId
+      }
+    }
+
+    const studentItem = await dynamoDb.get(getParams).promise()
+
+    if (studentItem.Item == null) {
+      const newParams = {
+        TableName: process.env.studentCoursesTableName ?? '',
+        Key: {
+          studentId
+        },
+        Item: {
+          studentId,
+          accepted: [],
+          applications: [newCourseId]
+        }
+      }
+      const result = await dynamoDb.put(newParams).promise()
+      return result
+    }
+
+    const putParams = {
       TableName: process.env.studentCoursesTableName ?? '',
       Key: {
         studentId
@@ -14,11 +40,10 @@ export async function applyForCourse (studentId: string, newCourseId: string): P
         ':new_course': [newCourseId],
         ':empty_list': []
       },
-      ReturnValues: 'UPDATED_NEW',
-      ConditionExpression: 'attribute_not_exists(studentId)'
+      ReturnValues: 'UPDATED_NEW'
     }
 
-    const result = await dynamoDb.update(params).promise()
+    const result = await dynamoDb.update(putParams).promise()
     return result
   } catch (err) {
     console.error(err)

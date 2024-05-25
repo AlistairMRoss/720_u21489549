@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import type { course, studentCourses } from '../../../sharedTypes/course'
-import { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses, applyForCourse, getStudentApplications } from '../api/courses'
+import { getAllCourses, addCourse, updateCourse, deleteCourse, getMyCourses, applyForCourse, getStudentApplications, acceptRejectApplication } from '../api/courses'
 
 export const useCourseStore = defineStore('courseStore', {
     state: () => ({
       courseList: null as course[] | null,
       myCourses: undefined as course[] | undefined,
       acceptedAndReject: null as studentCourses | null,
-      studentApplications: null as string[] | null
+      studentApplications: null as studentCourses | null
     }),
     actions: {
         async getAllCourses() {
@@ -41,10 +41,12 @@ export const useCourseStore = defineStore('courseStore', {
           const result = await applyForCourse(courseId)
         },
         async getStudentApplications(studentId: string) {
-          console.log(studentId)
-          const result = await getStudentApplications(studentId)
-          console.log(result)
-          this.studentApplications = result.Item
+            const result = await getStudentApplications(studentId)
+            this.studentApplications = result.Item
+        },
+        async acceptOrReject(courseId: string, studentId: string, acceptOrReject: boolean) {
+          console.log("Did this")
+          const result = await acceptRejectApplication(courseId, studentId, acceptOrReject)
         }
     }
 })
