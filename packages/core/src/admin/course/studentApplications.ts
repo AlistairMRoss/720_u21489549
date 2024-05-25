@@ -12,7 +12,7 @@ export async function studentApplications (studentId: string): Promise<PromiseRe
       }
     }
 
-    const result = await dynamoDb.query(getParams).promise()
+    const result = await dynamoDb.get(getParams).promise()
     console.log(result)
     return result
   } catch (err: any) {
