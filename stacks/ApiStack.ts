@@ -45,7 +45,7 @@ export function ApiStack({ stack, app }: StackContext) {
       'DELETE /v1/admin/{courseId}/delete': 'packages/functions/src/admin/course/deleteCourse.handler',
       'PUT /v1/admin/updateCourse': 'packages/functions/src/admin/course/updateCourse.handler',
       'POST /v1/admin/courseApplications' : 'packages/functions/src/admin/course/courseApplications.handler',
-      'GET /v1//admin/{studentId}/applications' : 'packages/functions/src/admin/course/studentApplications.handler'
+      'GET /v1/admin/{studentId}/applications' : 'packages/functions/src/admin/course/studentApplications.handler'
     },
   });
 
