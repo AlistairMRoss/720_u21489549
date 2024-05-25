@@ -54,13 +54,18 @@ export const useAuthStore = defineStore('auth', {
       if (val === null) {
         this.authDetails = val
       } else {
+        let groups
+        if (session.tokens.accessToken.payload["cognito:groups"] === undefined) {
+          groups = []
+        } else {
+          groups = session.tokens.accessToken.payload["cognito:groups"]
+        }
         this.authDetails = {
           userId: attributes.sub,
           email: attributes.email,
           token: session.tokens.accessToken.toString(),
-          emailVerified: attributes.email_verified
+          emailVerified: attributes.email_verified,
         }
-        console.log("got here")
       }
       return val
     },

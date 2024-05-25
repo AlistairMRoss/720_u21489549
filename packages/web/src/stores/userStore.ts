@@ -8,7 +8,8 @@ export const useUserStore = defineStore('user', {
     userDetails: null as AuthDetails | null,
     users: null as User[] | null,
     groups: null as Groups[] | null,
-    profile: null as Profile | null
+    profile: null as Profile | null,
+    updateUsers: null as Boolean | null
   }),
   actions: {
     async createUser(email: string) {

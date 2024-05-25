@@ -1,24 +1,51 @@
 <script lang="ts">
+    import { defineComponent, ref, onMounted } from 'vue'
     import MenuItem from './components/MenuItem.vue'
     import Header from './components/Header.vue'
-    export default {
+    import { useAuthStore } from '../../../../stores/authStore'
+
+    interface MenuItem {
+      pageTitle: string
+      routePath: string
+      icon: string
+    }
+
+    export default defineComponent({
         name: 'SideMenuPage',
         props: ['size'],
         components: {
             MenuItem,
             Header
         },
-        data () {
-          return {
-            menuItems: [
-              { pageTitle: 'Courses', routePath: '/', icon: 'bi bi-bank' },
-              { pageTitle: 'My Courses', routePath: '/courses', icon: 'bi bi-collection' },
-              { pageTitle: 'Profile', routePath: '/profile', icon: 'bi bi-person' },
-              { pageTitle: 'Users', routePath: '/users', icon: 'bi bi-people' },
-            ]
-          }
-        },
-    }
+        setup() {
+          const authStore = useAuthStore()
+          const authDetails = ref<string[]>()
+          const menuItems = ref<MenuItem[]>()
+          
+          onMounted(async () => {
+            authDetails.value = await authStore.getGroups() as string[]
+            if(authDetails.value === undefined) {
+              menuItems.value = [
+                { pageTitle: 'Courses', routePath: '/', icon: 'bi bi-bank' },
+                { pageTitle: 'Profile', routePath: '/profile', icon: 'bi bi-person' }
+              ]
+            }
+            else if(authDetails.value[0] === 'admin') {
+              menuItems.value = [
+                { pageTitle: 'Courses', routePath: '/', icon: 'bi bi-bank' },
+                { pageTitle: 'Users', routePath: '/users', icon: 'bi bi-people' }
+              ]
+            } else if (authDetails.value[0] === 'student') {
+              menuItems.value = [
+                { pageTitle: 'Courses', routePath: '/', icon: 'bi bi-bank' },
+                { pageTitle: 'My Courses', routePath: '/courses', icon: 'bi bi-collection' },
+                { pageTitle: 'Profile', routePath: '/profile', icon: 'bi bi-person' }
+              ]
+            }
+          })
+          return { menuItems }
+        }
+    })
 </script>
 
 <template>

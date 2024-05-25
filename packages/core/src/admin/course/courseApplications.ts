@@ -17,14 +17,10 @@ export async function courseApplications (courseId: string, studentId: string, a
       throw new Error('Item not found')
     }
 
-    console.log(currentItem)
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     const applications = currentItem.Item.applications || []
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     const acceptedList = currentItem.Item.accepted || []
-
-    console.log('Applications:', applications)
-    console.log('Accepted List:', acceptedList)
 
     if (acceptedList.length === 0 && accepted) {
       await addUserToGroup(studentId, 'student')

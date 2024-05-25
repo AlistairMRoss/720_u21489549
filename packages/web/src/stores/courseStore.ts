@@ -7,7 +7,10 @@ export const useCourseStore = defineStore('courseStore', {
       courseList: null as course[] | null,
       myCourses: undefined as course[] | undefined,
       acceptedAndReject: null as studentCourses | null,
-      studentApplications: null as studentCourses | null
+      studentApplications: null as studentCourses | null,
+      updateMyCourses: null as Boolean | null,
+      updateCourseList: null as Boolean | null,
+      updateStudentApplications: null as Boolean | null
     }),
     actions: {
         async getAllCourses() {

@@ -35,7 +35,7 @@
                     <label for="siteId" class="form-label">Joined Date</label>
                     <input type="text" class="form-control" id ="birthdate" v-model="userCreated" readonly/>
                 </div>
-                <div class="mb-3" v-if="courseApplications !== undefined">
+                <div class="mb-3" v-if="courseApplications?.length !== 0 && courseApplications !== undefined">
                     <label for="newPMnum" class="form-label">Course Applications</label>
                         <select v-model="courseId" class="form-control" id="courseSelection" @change="courseSelected()">
                             <option value="">---Select a course---</option>
@@ -67,7 +67,6 @@
     import { useUserStore } from '../../stores/userStore'
     import { useCourseStore } from '../../stores/courseStore'
     import ButtonWithSpinner from '../../elements/pageDisplay/components/ButtonWithSpinner.vue'
-import { setUpTOTP } from '@aws-amplify/auth'
 
     export default defineComponent({
         name: "User Info",
@@ -100,29 +99,36 @@ import { setUpTOTP } from '@aws-amplify/auth'
             const rejecting = ref(false)
 
             onMounted(async () => {
-                if(userStore.users === null) {
+                if(userStore.users === null || userStore.updateUsers) {
                     await userStore.getUsers()
+                    userStore.updateUsers = false
                 } 
                 user.value = userStore.users?.find(user => user.Username === username.value) as User || null
                 if(user.value.Username !== null) {
                     await courseStore.getStudentApplications(user.value.Username)
                     courseApplications.value = courseStore.studentApplications?.applications
-
                     given_name.value = getAttribute("given_name")
                     family_name.value = getAttribute("family_name")
                     email.value = getAttribute("email")
                     phone.value = getAttribute("phone_number")
                     birthdate.value = getAttribute("birthdate")
                     sub.value = getAttribute("sub")
-                    userCreated.value = getAttribute("UserCreateDate")
+                    userCreated.value = formatDate(user.value.UserCreateDate)
                     loading.value = false
                 }
                     
             })
-
             function getAttribute(attributeName: any) {
                 const attribute = user.value?.Attributes.find((attr: { Name: any; }) => attr.Name === attributeName);
                 return attribute ? attribute.Value : 'Not available';
+            }
+
+            function formatDate(datetime: string): string {
+                const date = new Date(datetime)
+                const year = date.getFullYear()
+                const month = String(date.getMonth() + 1).padStart(2, '0')
+                const day = String(date.getDate()).padStart(2, '0')
+                return `${year}-${month}-${day}`
             }
 
             return { loading, user, courseApplications, courseId, given_name, family_name, email, phone, birthdate, sub, userCreated, doUpdate, acceptReject, isSaveDisabled, accepting, rejecting, courseStore, userStore }
@@ -140,16 +146,6 @@ import { setUpTOTP } from '@aws-amplify/auth'
             getAttribute(attributeName: any) {
                 const attribute = this.user?.Attributes.find((attr: { Name: any; }) => attr.Name === attributeName);
                 return attribute ? attribute.Value : 'Not available';
-            },
-            getUserCreated() {
-                return this.formatDate(this.user?.UserCreateDate as string)
-            },
-            formatDate(datetime: string): string {
-                const date = new Date(datetime)
-                const year = date.getFullYear()
-                const month = String(date.getMonth() + 1).padStart(2, '0')
-                const day = String(date.getDate()).padStart(2, '0')
-                return `${year}-${month}-${day}`
             },
             courseSelected() {
                 console.log(this.courseId)
@@ -195,7 +191,9 @@ import { setUpTOTP } from '@aws-amplify/auth'
                 this.acceptReject = true
                 this.courseStore.acceptOrReject(this.courseId as string, this.sub as string, acceptOrReject)
                 this.acceptReject = false
-                this.courseStore.getMyCourses()
+                this.courseStore.updateMyCourses = true
+                this.courseStore.updateStudentApplications = true
+                this.userStore.updateUsers = true
                 this.$router.push('/users')
             }
         }

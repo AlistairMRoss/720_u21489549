@@ -38,8 +38,9 @@
             const loading = ref(true)
             const users = ref<User[]>([])
             onMounted(async () => {
-                if(userStore.users === null) {
+                if(userStore.users === null || userStore.updateUsers) {
                     await userStore.getUsers()
+                    userStore.updateUsers = false
                 }
                 users.value = userStore.users || []
                 loading.value = false

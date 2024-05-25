@@ -144,7 +144,7 @@ const getStudentApplications = async (studentId: string): Promise<any> => {
     }
 }
 
-const acceptRejectApplication = async (courseId: string, studentId: string, acceptOrReject: boolean): Promise<any> => {
+const acceptRejectApplication = async (courseId: string, studentId: string, accepted: boolean): Promise<any> => {
     const authStore = useAuthStore()
     await authStore.checkLoginStatus()
     const userDetails = authStore.authDetails
@@ -155,7 +155,7 @@ const acceptRejectApplication = async (courseId: string, studentId: string, acce
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({courseId, studentId, acceptOrReject})
+        body: JSON.stringify({courseId, studentId, accepted})
     })
     const respObj = await response.json()
     if(response.status === 200) {

@@ -2,8 +2,7 @@ export interface AuthDetails {
   userId: string,
   email: string,
   token: string,
-  emailVerified?: boolean,
-  group?: string,
+  emailVerified?: boolean
 }
 export interface Attribute {
   Name: 'sub' | 'email_verified' | 'email'
