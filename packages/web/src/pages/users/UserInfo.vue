@@ -195,6 +195,8 @@ import { setUpTOTP } from '@aws-amplify/auth'
                 this.acceptReject = true
                 this.courseStore.acceptOrReject(this.courseId as string, this.sub as string, acceptOrReject)
                 this.acceptReject = false
+                this.courseStore.getMyCourses()
+                this.$router.push('/users')
             }
         }
     })

@@ -1,5 +1,6 @@
 import { DynamoDB, type AWSError } from 'aws-sdk'
 import { type PromiseResult } from 'aws-sdk/lib/request.js'
+import { addUserToGroup } from '../users/addUserToGroup.js'
 
 export async function courseApplications (courseId: string, studentId: string, accepted: boolean): Promise<PromiseResult<DynamoDB.DocumentClient.UpdateItemOutput, AWSError>> {
   try {
@@ -16,11 +17,18 @@ export async function courseApplications (courseId: string, studentId: string, a
       throw new Error('Item not found')
     }
 
+    console.log(currentItem)
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     const applications = currentItem.Item.applications || []
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
     const acceptedList = currentItem.Item.accepted || []
 
+    console.log('Applications:', applications)
+    console.log('Accepted List:', acceptedList)
+
+    if (acceptedList.length === 0 && accepted) {
+      await addUserToGroup(studentId, 'student')
+    }
     const updatedApplications = applications.filter((id: string) => id !== courseId)
 
     let updateExpression = 'SET #applications = :updatedApplications'
@@ -29,10 +37,15 @@ export async function courseApplications (courseId: string, studentId: string, a
 
     if (accepted) {
       const updatedAcceptedList = [...acceptedList, courseId]
+      console.log(updatedAcceptedList)
       updateExpression += ', #accepted = :updatedAcceptedList'
       expressionAttributeValues[':updatedAcceptedList'] = updatedAcceptedList
       expressionAttributeNames['#accepted'] = 'accepted'
     }
+
+    console.log(updateExpression)
+    console.log(expressionAttributeValues)
+    console.log(expressionAttributeNames)
 
     const updateParams = {
       TableName: process.env.studentCoursesTableName ?? '',
