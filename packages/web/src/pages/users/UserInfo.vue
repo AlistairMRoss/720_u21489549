@@ -149,9 +149,9 @@
             delete() {
                 
             },
-            update() {
+            async update() {
                 this.updating = true
-                this.userStore.updateUser(this.sub as string, this.given_name as string, this.family_name as string, this.phone as string)
+                await this.userStore.updateUser(this.sub as string, this.given_name as string, this.family_name as string, this.phone as string)
                 this.updating = false
                 this.$router.push('/users')
             },

@@ -130,8 +130,8 @@ const updateUser = async (userId: string, givenName: string, familyName: string,
     await authStore.checkLoginStatus()
     const userDetails = authStore.authDetails
     const token = userDetails?.token as string
-    const response = await fetch(`${API_ROOT}/v1/admin/student/update`, {
-        method: 'UPDATE',
+    const response = await fetch(`${API_ROOT}/admin/student/update`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
