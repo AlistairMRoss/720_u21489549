@@ -1,7 +1,11 @@
 <template>
     <PageDisplay>
         <template v-slot:header>
-            <PageOptionsBar />
+            <PageOptionsBar>
+                <div class="d-flex justify-content-end align-items-end px-5" v-if="isAdmin">
+                    <button type="button" class="btn btn-primary" @click="openCreate">Create Course</button>
+                </div>
+            </PageOptionsBar>
         </template>
         <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="spinner-border" role="status">
@@ -26,6 +30,7 @@
     import Course from './components/Course.vue'
     import PopupCourse from './components/PopupCourse.vue'
     import { useCourseStore } from '../../stores/courseStore'
+    import { useAuthStore } from '../../stores/authStore'
     import { type course } from '../../../../sharedTypes/course'
     
     export default defineComponent({
@@ -38,18 +43,31 @@
         },
         setup() {
             const courseStore = useCourseStore()
+            const authStore = useAuthStore()
             const loading = ref(true)
             const courses = ref<course[]>([])
+            const isAdmin = ref(false)
             let popCourse = ref<course>()
+            
             onMounted(async () => {
                 if (courseStore.courseList === null) {
                     await courseStore.getAllCourses()
+                }
+                const groups = await authStore.getGroups() as string[]
+                if (groups.indexOf('admin') !== -1) {
+                    isAdmin.value = true
                 }
                 courses.value  = courseStore.courseList || []
                 loading.value = false
             })
 
-            return { loading, courses, popCourse }
+            watch(() => courseStore.courseList,(newCourseList) => {
+                    if (newCourseList !== courses.value) {
+                    courses.value = newCourseList || []
+                    }
+                })
+
+            return { loading, courses, popCourse, isAdmin }
         },
         data () {
             return {
@@ -63,7 +81,10 @@
             },
             closePopup() {
                 this.showCourse = false
-            }
+            },
+            openCreate() {
+                this.$router.push("/createcourse")
+            }   
         }
     })
 </script>

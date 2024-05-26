@@ -1,11 +1,18 @@
 <template>
     <PageDisplay>
+        <template v-slot:header>
+            <PageOptionsBar>
+                <span @click="goBack" class="pointer">
+                    <i class="bi bi-chevron-left" /> Back
+                </span> 
+            </PageOptionsBar>
+        </template>
         <div v-if="loading" class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <div class="spinner-border" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        <div v-else class="row mx-0 pTopMore">
+        <div v-else class="row mx-0 pTopMore mt-5">
             <div class="container">
                 <div class="mb-3">
                     <label for="siteName" class="form-label" >First Name</label>
@@ -69,6 +76,7 @@
     import { defineComponent, ref, onMounted, watch } from 'vue'
     import { useRoute, useRouter } from 'vue-router'
     import PageDisplay from '../../elements/pageDisplay/PageDisplay.vue'
+    import PageOptionsBar from '../../elements/pageDisplay/PageOptionsBar.vue'
     import { type User } from '../../../../sharedTypes/users'
     import { useUserStore } from '../../stores/userStore'
     import { useCourseStore } from '../../stores/courseStore'
@@ -78,6 +86,7 @@
         name: "User Info",
         components: {
             PageDisplay,
+            PageOptionsBar,
             ButtonWithSpinner
         },
         setup() {
@@ -140,7 +149,7 @@
 
             return { loading, user, courseApplications, courseId, given_name, family_name, email, phone, 
                     birthdate, sub, userCreated, doUpdate, acceptReject, isSaveDisabled, accepting, rejecting, 
-                    courseStore, userStore, updating }
+                    courseStore, userStore, updating, username }
         },
         methods: {
             cancel() {
@@ -153,14 +162,15 @@
                 this.updating = true
                 await this.userStore.updateUser(this.sub as string, this.given_name as string, this.family_name as string, this.phone as string)
                 this.updating = false
-                this.$router.push('/users')
+                this.doUpdate = false
+                await this.userStore.getUsers()
+                this.user = this.userStore.users?.find(user => user.Username === this.username) as User || null
             },
             getAttribute(attributeName: any) {
                 const attribute = this.user?.Attributes.find((attr: { Name: any; }) => attr.Name === attributeName);
                 return attribute ? attribute.Value : 'Not available';
             },
             courseSelected() {
-                console.log(this.courseId)
                 if(this.courseId !== '') {
                     this.accepting = true
                     this.rejecting = true
@@ -168,7 +178,6 @@
                     this.accepting = false
                     this.rejecting = false
                 }
-                console.log(this.acceptReject)
             },
             gNameChange() {
                 if(this.given_name !== this.getAttribute("given_name")) {
@@ -206,6 +215,9 @@
                 this.courseStore.updateMyCourses = true
                 this.courseStore.updateStudentApplications = true
                 this.userStore.updateUsers = true
+                this.$router.push('/users')
+            }, 
+            goBack() {
                 this.$router.push('/users')
             }
         }

@@ -40,7 +40,6 @@ export const useUserStore = defineStore('user', {
       return result
     },
     async updateUser(userId: string, givenName: string, familyName: string, phoneNumber: string) {
-      console.log("doing this")
       const result = await updateUser(userId, givenName, familyName, phoneNumber)
       return result
     }

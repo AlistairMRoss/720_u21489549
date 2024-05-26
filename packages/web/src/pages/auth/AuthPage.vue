@@ -19,6 +19,11 @@ export default {
   components: {
     HeaderComponent,
     Authenticator
+  },
+  methods: {
+    goToPrivacy() {
+      this.$router.push('privacy')
+    }
   }
 }
 </script>
@@ -32,5 +37,16 @@ export default {
         <Authenticator :login-mechanisms="['email']" :hide-sign-up="false"></Authenticator>
       </div>
     </div>
+    <div class="d-flex justify-content-center align-items-ceenter mt-3">
+        <a @click="goToPrivacy" class="privacy-link">Privacy Policy</a>
+    </div>
   </div>
 </template>
+
+<style scoped>
+  .privacy-link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>

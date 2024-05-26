@@ -37,7 +37,6 @@ export const useCourseStore = defineStore('courseStore', {
           }
           if (this.courseList) {
             this.myCourses = this.courseList.filter((course) => this.acceptedAndReject?.accepted.includes(course.courseId))
-            console.log(this.myCourses)
           }
         },
         async applyForCourse(courseId: string) {

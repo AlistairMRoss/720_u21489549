@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="row mt-5">
-                <ButtonWithSpinner v-if="canApply" :disabled="isSaveDisabled" :isBusy="applying" @btnClicked="apply" btnClass="btn-primary" class="m-2">
+                <ButtonWithSpinner v-if="canApply && loaded" :disabled="isSaveDisabled" :isBusy="applying" @btnClicked="apply" btnClass="btn-primary" class="m-2">
                     <span v-if="applying">Applying...</span>
                     <span v-else-if="!applying">Apply</span>
                 </ButtonWithSpinner>
@@ -36,32 +36,29 @@
 
 
 <script lang="ts">
+    import { defineComponent, ref, computed } from 'vue'
     import { useCourseStore } from '../../../stores/courseStore'
     import ButtonWithSpinner  from '../../../elements/pageDisplay/components/ButtonWithSpinner.vue'
     import PopUp from '../../../elements/popup/PopUp.vue'
-    export default {
+    export default defineComponent({
         name: "PopupCourse",
         props: ["course", "closePopup"],
         components: { PopUp, ButtonWithSpinner },
-        setup() {
+        setup(props) {
             const courseStore = useCourseStore()
-            return { courseStore }
-        },
-        data() {
-            return {
-                isSaveDisabled: false,
-                applying: false
-            }
+            const applying = ref(false)
+            const isSaveDisabled = ref(false)
+            courseStore.getMyCourses()
+            const loaded = ref(false)
+
+            const canApply = computed(() => {
+                return !courseStore.myCourses?.find(course => course.courseId === props.course.courseId)
+            })
             
-        },
-        mounted() {
-            this.courseStore.getMyCourses()
-        },
-        computed: {
-            canApply() {
-                console.log(this.courseStore.myCourses?.find(course => course.courseId === this.course.courseId) !== undefined)
-                return this.courseStore.myCourses?.find(course => course.courseId === this.course.courseId) === undefined
+            if (courseStore.myCourses) {
+                loaded.value = true
             }
+            return { courseStore, applying, isSaveDisabled, canApply, loaded}
         },
         methods: {
             goBack() {
@@ -73,6 +70,5 @@
                 this.goBack()
             }
         }
-    }
-
+    })
 </script>
