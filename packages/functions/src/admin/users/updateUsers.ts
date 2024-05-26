@@ -1,6 +1,7 @@
 import { type APIGatewayProxyHandlerV2, type APIGatewayProxyResultV2 } from 'aws-lambda'
 import { updateUserAttributes } from '../../../../core/src/admin/users/updateUser.js'
 import { adminCheck } from '../../../../core/src/admin/adminCheck.js'
+
 export const handler: APIGatewayProxyHandlerV2 = async (event: any): Promise<APIGatewayProxyResultV2> => {
   try {
     const data = JSON.parse(event.body as string)
