@@ -125,7 +125,25 @@ const addUserToGroup = async (userId: string, group: string): Promise<any> => {
     }
 }
 
+const updateUser = async (userId: string, givenName: string, familyName: string, phoneNumber: string): Promise<any> => {
+    const authStore = useAuthStore()
+    await authStore.checkLoginStatus()
+    const userDetails = authStore.authDetails
+    const token = userDetails?.token as string
+    const response = await fetch(`${API_ROOT}/v1/admin/student/update`, {
+        method: 'UPDATE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ userId, givenName, familyName, phoneNumber })
+    })
+    const respObj = await response.json()
+    if(response.status === 200) {
+        return respObj
+    } else {
+        throw new Error(respObj.message)
+    }
+}
 
-
-
-export { createUser, deleteUser, getUsers, getGroups, createGroup, addUserToGroup }
+export { createUser, deleteUser, getUsers, getGroups, createGroup, addUserToGroup, updateUser }

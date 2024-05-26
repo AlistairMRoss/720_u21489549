@@ -35,7 +35,7 @@ export function ApiStack({ stack, app }: StackContext) {
       'GET /v1/admin/user/getGroups': 'packages/functions/src/admin/users/getGroups.handler',
       'PATCH /v1/admin/user/{userId}/addUserToGroup': 'packages/functions/src/admin/users/addUserToGroup.handler',
       'GET /v1/student/getProfile': 'packages/functions/src/student/getMyProfile.handler',
-
+      'UPDATE /v1/admin/student/update': 'packages/functons/src/admin/users/updateUsers.ts',
       // courses
       'GET /v1/courses': 'packages/functions/src/course/getCourses.handler',
       'POST /v1/courses/apply': 'packages/functions/src/student/applyForCourse.handler',
@@ -55,6 +55,7 @@ export function ApiStack({ stack, app }: StackContext) {
   api.attachPermissionsToRoute('PATCH /v1/admin/user/{userId}/addUserToGroup', ['cognito-idp:AdminAddUserToGroup'])
   api.attachPermissionsToRoute('POST /v1/admin/courseApplications', ['cognito-idp:AdminAddUserToGroup'])
   api.attachPermissionsToRoute('GET /v1/student/getProfile', ['cognito-idp:GetUser'])
+  api.attachPermissionsToRoute('UPDATE /v1/admin/student/update', ['cognito-idp:adminUpdateUserAttributes']),
   api.attachPermissions([courseTable, studentCourses])
   stack.addOutputs({
     ApiEndpoint: api.url

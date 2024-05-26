@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { AuthDetails, User, Profile, Groups} from '../../../sharedTypes/users'
-import  {createUser, deleteUser, getUsers, getGroups, addUserToGroup} from '../api/users'
+import  {createUser, deleteUser, getUsers, getGroups, addUserToGroup, updateUser } from '../api/users'
 import { getMyProfile } from '../api/student'
 
 export const useUserStore = defineStore('user', {
@@ -35,10 +35,13 @@ export const useUserStore = defineStore('user', {
       return result
     },
     async getMyProfile() {
-      console.log("Is this happening")
-        const result = await getMyProfile()
-        this.profile = result.result
-        return result
+      const result = await getMyProfile()
+      this.profile = result.result
+      return result
+    },
+    async updateUser(userId: string, givenName: string, familyName: string, phoneNumber: string) {
+      const result = await updateUser(userId, givenName, familyName, phoneNumber)
+      return result
     }
   },
 })

@@ -21,7 +21,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="siteId" class="form-label">Cellphone</label>
-                    <input type="phone" class="form-control" id ="cell" v-model="phone" @input="phoneChange()"/>
+                    <input type="text" class="form-control" id ="cell" v-model="phone" @input="phoneChange()"/>
                 </div>
                 <div class="mb-3">
                     <label for="siteId" class="form-label">Birthdate</label>
@@ -35,7 +35,7 @@
                     <label for="siteId" class="form-label">Joined Date</label>
                     <input type="text" class="form-control" id ="birthdate" v-model="userCreated" readonly/>
                 </div>
-                <div class="mb-3" v-if="courseApplications?.length !== 0 && courseApplications !== undefined">
+                <div class="mb-3" v-if="courseApplications?.length !== 0 && courseApplications !== undefined && doUpdate === false">
                     <label for="newPMnum" class="form-label">Course Applications</label>
                         <select v-model="courseId" class="form-control" id="courseSelection" @change="courseSelected()">
                             <option value="">---Select a course---</option>
@@ -45,7 +45,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="d-flex justify-content-between">
+                <div class="d-flex justify-content-between" v-if="doUpdate === false">
                     <ButtonWithSpinner v-if="accepting" :disabled="isSaveDisabled" :isBusy="acceptReject" @btnClicked="doApplication(true)" btnClass="btn-success" class="m-2 w-100">
                         <span v-if="acceptReject">Processing...</span>
                         <span v-else-if="!acceptReject">Accept</span>
@@ -53,6 +53,12 @@
                     <ButtonWithSpinner v-if="rejecting" :disabled="isSaveDisabled" :isBusy="acceptReject" @btnClicked="doApplication(false)" btnClass="btn-danger" class="m-2 w-100">
                         <span v-if="acceptReject">Processing...</span>
                         <span v-else-if="!acceptReject">Reject</span>
+                    </ButtonWithSpinner>
+                </div>
+                <div class="d-flex" v-else> 
+                    <ButtonWithSpinner v-if="doUpdate" :disabled="isSaveDisabled" :isBusy="updating" @btnClicked="update" btnClass="btn-success" class="m-2 w-100">
+                        <span v-if="updating">Processing...</span>
+                        <span v-else-if="!updating">Update</span>
                     </ButtonWithSpinner>
                 </div>
             </div>
@@ -93,6 +99,7 @@
             const userCreated = ref('')
 
             const doUpdate = ref(false)
+            const updating = ref(false)
             const acceptReject = ref(false)
             const isSaveDisabled = ref(false)
             const accepting = ref(false)
@@ -131,7 +138,9 @@
                 return `${year}-${month}-${day}`
             }
 
-            return { loading, user, courseApplications, courseId, given_name, family_name, email, phone, birthdate, sub, userCreated, doUpdate, acceptReject, isSaveDisabled, accepting, rejecting, courseStore, userStore }
+            return { loading, user, courseApplications, courseId, given_name, family_name, email, phone, 
+                    birthdate, sub, userCreated, doUpdate, acceptReject, isSaveDisabled, accepting, rejecting, 
+                    courseStore, userStore, updating }
         },
         methods: {
             cancel() {
@@ -141,7 +150,10 @@
                 
             },
             update() {
-
+                this.updating = true
+                this.userStore.updateUser(this.sub as string, this.given_name as string, this.family_name as string, this.phone as string)
+                this.updating = false
+                this.$router.push('/users')
             },
             getAttribute(attributeName: any) {
                 const attribute = this.user?.Attributes.find((attr: { Name: any; }) => attr.Name === attributeName);
@@ -167,7 +179,7 @@
                 }
             },
             fNameChange() {
-                if(this.given_name !== this.getAttribute("family_name")) {
+                if(this.family_name !== this.getAttribute("family_name")) {
                     this.doUpdate = true
                 }
                 else {
@@ -175,7 +187,7 @@
                 }
             },
             phoneChange() {
-                if(this.given_name !== this.getAttribute("phone_number")) {
+                if(this.phone !== this.getAttribute("phone_number")) {
                     this.doUpdate = true
                 }
                 else {
