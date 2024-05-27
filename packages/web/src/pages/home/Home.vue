@@ -54,8 +54,10 @@
                     await courseStore.getAllCourses()
                 }
                 const groups = await authStore.getGroups() as string[]
-                if (groups.indexOf('admin') !== -1) {
+                if (groups) {
+                    if (groups.indexOf('admin') !== -1) {
                     isAdmin.value = true
+                }
                 }
                 courses.value  = courseStore.courseList || []
                 loading.value = false
