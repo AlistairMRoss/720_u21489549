@@ -52,10 +52,16 @@
             const loaded = ref(false)
 
             const canApply = computed(() => {
-                return !courseStore.myCourses?.find(course => course.courseId === props.course.courseId)
+                if(courseStore.myCourses === undefined){
+                    console.log("this")
+                    return true
+                } else {
+                    return !courseStore.myCourses?.find(course => course.courseId === props.course.courseId)
+                }
+                
             })
             
-            if (courseStore.myCourses) {
+            if (courseStore.myCourses || courseStore.myCourses === undefined) {
                 loaded.value = true
             }
             return { courseStore, applying, isSaveDisabled, canApply, loaded}
