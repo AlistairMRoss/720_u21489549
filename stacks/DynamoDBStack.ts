@@ -1,7 +1,7 @@
 
-import { StackContext, Table} from 'sst/constructs'
+import { StackContext, Table, Bucket } from 'sst/constructs'
 
-export function DynamoDBStack ({ stack }: StackContext): { courseTable: Table, studentCourses: Table }
+export function DynamoDBStack ({ stack }: StackContext): { courseTable: Table, studentCourses: Table, bucket: Bucket}
 {
   const courseTable = new Table(stack, "courseData", {
     fields: {
@@ -19,5 +19,8 @@ export function DynamoDBStack ({ stack }: StackContext): { courseTable: Table, s
       partitionKey: "studentId"},
   })
 
-  return { courseTable, studentCourses }
+  const bucket = new Bucket(stack, "Uploads");
+
+
+  return { courseTable, studentCourses, bucket }
 } 
