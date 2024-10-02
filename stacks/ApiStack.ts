@@ -49,10 +49,11 @@ export function ApiStack({ stack, app }: StackContext) {
       'GET /v1/admin/{studentId}/applications' : 'packages/functions/src/admin/course/studentApplications.handler',
 
       //firmware
-      'GET /v1/firmware/getFirmware': {
-        function: 'packages/functions/src/firmware/getFirmware.handler',
-        authorizer: 'none'
-      }
+      // 'GET /v1/firmware/getFirmware': {
+      //   function: 'packages/functions/src/firmware/getFirmware.handler',
+      //   authorizer: 'none'
+      // }
+      'GET /v1/firmware/getFirmware': 'packages/functions/src/firmware/getFirmware.handler'
     },
   });
 
